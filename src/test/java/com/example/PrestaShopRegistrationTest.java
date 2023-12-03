@@ -19,9 +19,8 @@ public class PrestaShopRegistrationTest {
 //Changes  
  @BeforeTest
     public void setUp() {
-        driver = new ChromeDriver();
-        new WebDriverWait
-        driver.manage().window().maximize();
+        driver1 = new ChromeDriver();
+        driver1.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
     @Test
