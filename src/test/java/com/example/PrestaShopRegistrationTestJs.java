@@ -1,5 +1,6 @@
 package com.example;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,18 +12,19 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import java.time.Duration;
 
-public class PrestaShopRegistrationTest {
+public class PrestaShopRegistrationTestJs {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
-//Changes  
- @BeforeTest
+    // changes in local
+    @BeforeTest
     public void setUp() {
-        driver1 = new ChromeDriver();
-        driver1.manage().window().maximize();
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
+
     @Test
     public void testPrestaShopRegistration() {
         driver.get("http://prestashop.qatestlab.com.ua/en/authentication?back=my-account#account-creation");
@@ -31,14 +33,17 @@ public class PrestaShopRegistrationTest {
         emailInput.sendKeys("test+790@example.com");
 
         WebElement createAccountButton = driver.findElement(By.id("SubmitCreate"));
-        createAccountButton.click();
-        new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click();", createAccountButton);
 
         WebElement createAccountText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Create an account')]")));
+
         String actualText = createAccountText.getText();
         String expectedText = "CREATE AN ACCOUNT";
         Assert.assertEquals(actualText, expectedText);
     }
+
     @AfterTest
     public void tearDown() {
         if (driver != null) {
